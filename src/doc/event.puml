@@ -1,0 +1,57 @@
+@startuml
+participant eventProcessor as pro
+participant acceptProcessor as accept
+participant routeProcessor as route
+participant startProcessor as start
+participant completeProcessor as complete
+participant notDoneProcessor as notDone
+participant eventService as repo
+participant notifier as not
+
+activate pro
+    pro -> repo
+    activate repo
+    return events
+    
+    loop event in events
+        pro -> accept : process Accept Event
+        activate accept
+            accept -> not : notify Sky
+            activate not
+            deactivate
+        deactivate
+        
+        pro -> route : process Route Event
+        activate route
+            route -> not : notify Sky
+            activate not
+            deactivate
+        deactivate
+        
+        pro -> start : process Start Event
+        activate start
+            start -> not : notify Sky
+            activate not
+            deactivate
+        deactivate
+        
+        pro -> complete : process Complete Event
+        activate complete
+            complete -> not : notify Sky
+            activate not
+            deactivate
+        deactivate
+        
+        pro -> notDone : process NotDone Event
+        activate notDone
+            notDone -> not : notify Sky
+            activate not
+            deactivate
+        deactivate
+        
+    end loop
+
+deactivate pro
+
+
+@enduml
